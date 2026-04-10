@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./node_modules/.bin/oxfmt src/main.ts --quote-style single 2>&1)",
+      "Bash(./node_modules/.bin/oxfmt --help 2>&1 | head -30)",
+      "Bash(./node_modules/.bin/oxfmt --help 2>&1 | grep -A5 quote)",
+      "Bash(./node_modules/.bin/oxfmt --check src/main.ts 2>&1)",
+      "Bash(./node_modules/.bin/oxlint --rules 2>&1 | grep -i quote)",
+      "Bash(./node_modules/.bin/oxlint --help 2>&1 | head -40)",
+      "Bash(./node_modules/.bin/oxlint -D quotes src/main.ts 2>&1)",
+      "Bash(ls -la /Users/momoyu/Desktop/common-scripts/.oxlintrc* 2>&1 && cat /Users/momoyu/Desktop/common-scripts/.oxlintrc.json 2>&1)",
+      "Bash(printf '{\\\\n  \"rules\": {\\\\n    \"quotes\": [\"error\", \"single\"]\\\\n  }\\\\n}\\\\n' > /Users/momoyu/Desktop/common-scripts/.oxlintrc.json && cat /Users/momoyu/Desktop/common-scripts/.oxlintrc.json)",
+      "Bash(./node_modules/.bin/oxlint src/main.ts 2>&1)",
+      "Bash(./node_modules/.bin/oxlint --list-rules 2>&1 | grep -i quote)",
+      "Bash(./node_modules/.bin/oxlint --list-rules 2>&1 | head -50)",
+      "Bash(./node_modules/.bin/oxlint --help 2>&1 | grep -i \"list\\\\|rules\")",
+      "Bash(printf '{}' > /Users/momoyu/Desktop/common-scripts/.oxlintrc.json && ./node_modules/.bin/oxlint --rules 2>&1 | grep -i \"string\\\\|quote\\\\|style\")",
+      "Bash(./node_modules/.bin/oxlint --rules 2>&1 | grep -i \"prefer.*quote\\\\|avoid.*quote\\\\|double\\\\|single\")"
+    ]
+  }
+}
