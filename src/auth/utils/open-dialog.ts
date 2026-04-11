@@ -1,8 +1,11 @@
+import styles from './auth.css?inline';
+
 
 const dialogHTML = `
 <dialog
   id="auth-dialog"
   open
+  class="auth-dialog"
 >
   <form method="dialog">
     <p>
@@ -22,6 +25,11 @@ const dialogHTML = `
 
 const openDialog = () => {
   console.log('open dialog');
+
+  // 插入 css
+  const style = document.createElement('style');           
+  style.textContent = styles;
+  document.head.appendChild(style); 
 
   // 根据模板插入一个弹窗到 body 中
   const dialog = document.createElement('dialog');
