@@ -1,29 +1,25 @@
-import { userUrl } from "./config";
-import type { IUserContent, IRequest } from "./types";
-import openDialog from "./utils/open-dialog";
-// import interceptor from "./utils/middleware";
+import interceptor from "./utils/middleware";
+import {fetchUser} from "./api";
+import {JUMP_LOGIN_EVENT} from "./config";
+import {inQb} from "./utils/qb-service";
+import { loginInQb, loginInBrowser } from "./utils";
 
 console.log("auth.js start");
-// interceptor();
+interceptor();
 
-const getUser = async () => {
-  try {
-    const response = await fetch(userUrl);
-    return response.json() as Promise<IRequest<IUserContent>>;
-  } catch (error) {
-    console.error("Failed to fetch user:", error);
-    return { content: null };
+window.addEventListener(JUMP_LOGIN_EVENT, () => {
+  console.log(`[${JUMP_LOGIN_EVENT}] event received`);
+  if (inQb()) {
+    loginInQb()
+  } else {
+    loginInBrowser();
   }
-};
-
-window.addEventListener("OPEN_AUTH_DIALOG", () => {
-  console.log("OPEN_AUTH_DIALOG event received, opening auth dialog");
-  openDialog();
 });
 
 console.log("auth.ts end");
 
-const user = await getUser();
-console.log("user", user);
+// 获取用户信息保存在 window.SS_USER 中
+const userData = await fetchUser();
+console.log("user", userData);
 
-window.SS_USER = user.content;
+window.SS_USER = userData.content;
