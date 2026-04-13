@@ -1,0 +1,57 @@
+:root {
+  --dialog-bg: #172422;
+  --btn-bg: rgba(0, 116, 116, 1);
+  --btn-bg-hover: rgba(0, 139, 139, 1);
+  --btn-color: #FFF;
+  --color: rgba(255, 227, 179, 1);
+  --input-bg: rgb(2, 22, 26);
+}
+
+.auth-dialog {
+  width: 300px;
+  height: 180px;
+  background-color: var(--dialog-bg);
+  border-radius: 4px;
+  padding: 20px;
+  position: fixed;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  label {
+    color: var(--color);
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+  }
+
+  input {
+    border: 1px solid rgba(38, 96, 88, 1);
+  }
+
+  input:active,
+  input:hover {
+    border: 1px solid rgba(0, 204, 177);
+  }
+
+  button {
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+  }
+
+  button:hover {
+    background-color: var(--btn-bg-hover);
+  }
+}

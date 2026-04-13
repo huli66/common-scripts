@@ -1,54 +1,32 @@
 import md5 from "md5";
 import { loginUrl } from "../config";
-import styles from "./auth.css?inline";
 
-const dialogHTML = `
-<dialog
-  id="auth-dialog"
-  open
-  class="auth-dialog"
->
-  <form method="dialog">
-    <p>
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" autocomplete="username">
-    </p>
-    <p>
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" autocomplete="current-password">
-    </p>
-    <p>
-      <button type="submit">Login</button>
-    </p>
-  </form>
-</dialog>
-`;
+import dialogHTML from "./dialog.html?raw";
+import dialogStyle from "./dialog.css?inline";
 
 const openDialog = () => {
   console.log("open dialog");
 
-  // 插入 css
   const style = document.createElement("style");
-  style.textContent = styles;
+  style.textContent = dialogStyle;
   document.head.appendChild(style);
 
-  // 根据模板插入一个弹窗到 body 中
-  const dialog = document.createElement("dialog");
-  dialog.innerHTML = dialogHTML;
-  document.body.appendChild(dialog);
+  document.body.insertAdjacentHTML('beforeend', dialogHTML);                                   
+  const dialog = document.getElementById('auth-dialog') as HTMLDialogElement;
 
-  // 打开弹窗
   dialog.showModal();
 
-  // 监听表单提交事件
   dialog.querySelector("form")?.addEventListener("submit", (event) => {
     event.preventDefault();
     const username = (dialog.querySelector("#username") as HTMLInputElement)
-      ?.value;
+      ?.value?.trim();
     const password = (dialog.querySelector("#password") as HTMLInputElement)
-      ?.value;
+      ?.value?.trim();
     console.log("Username:", username);
     console.log("Password:", password);
+    if (!username || !password) {
+      return;
+    }
     fetch(loginUrl, {
       method: "POST",
       headers: {
@@ -58,17 +36,20 @@ const openDialog = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Login successful:", data);
         if (data.status === 200) {
           console.log("Login successful!");
           window.location.reload();
+          dialog.close();
         }
         // 这里可以根据返回的数据进行相应的处理，比如存储 token 等
       })
       .catch((error) => {
         console.error("Login failed:", error);
       });
-    dialog.close();
+  });
+
+  dialog.querySelector("button")?.addEventListener("click", () => {
+    console.log('click')
   });
 };
 
