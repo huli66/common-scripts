@@ -10,7 +10,7 @@ export const fetchUser = (): Promise<IRequest<IUserContent>> => {
         return resolve(data as IRequest<IUserContent>);
       })
       .catch((error) => {
-        console.error("Failed to fetch user:", error);
+        console.log("Failed to fetch user:", error);
         return reject(error as Error);
       });
   });

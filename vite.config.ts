@@ -2,11 +2,13 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
+    minify: true,
     lib: {
       entry: 'src/auth/auth.ts',
       name: 'SSAuth',
       fileName: (format) => `auth.${format}.js`,
-      formats: ['es', 'iife']
+      formats: ['es'],
+      
     }
   },
   server: {

@@ -1,18 +1,19 @@
-:root {
+.auth-dialog {
   --dialog-bg: #172422;
+  --dialog-backdrop-bg: #000000;
   --btn-bg: rgba(0, 116, 116, 1);
   --btn-bg-hover: rgba(0, 139, 139, 1);
   --btn-color: #FFF;
   --color: rgba(255, 227, 179, 1);
   --input-bg: rgb(2, 22, 26);
-}
+  --input-border: rgba(38, 96, 88, 1);
+  --input-border-hover: rgba(0, 204, 177);
 
-.auth-dialog {
   width: 300px;
   height: 180px;
   background-color: var(--dialog-bg);
-  border-radius: 4px;
-  padding: 20px;
+  border-radius: 5px;
+  padding: 15px;
   position: fixed;
   margin: 0;
   top: 50%;
@@ -22,6 +23,12 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border: none;
+  font-size: 16px;
+
+  &::backdrop {
+    background-color: var(--dialog-backdrop-bg);
+  }
 
   label {
     color: var(--color);
@@ -31,24 +38,40 @@
   }
 
   input {
-    border: 1px solid rgba(38, 96, 88, 1);
-  }
-
-  input:active,
-  input:hover {
-    border: 1px solid rgba(0, 204, 177);
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--color);
+    border-radius: 5px;
+    outline: none;
+    width: 300px;
+    height: 28px;
+    font-size: 1rem;
+    padding: 0 8px;
+    box-sizing: border-box;
+    &:active,
+    &:hover {
+      border: 1px solid var(--input-border-hover);
+    }
+    &:-webkit-autofill,
+    &:autofill {
+      font-size: 16px !important;
+      box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
+      -webkit-text-fill-color: var(--color) !important;
+    }
   }
 
   button {
     background-color: var(--btn-bg);
     color: var(--btn-color);
-    border-radius: 4px;
+    border-radius: 5px;
+    height: 28px;
+    border: none;
     cursor: pointer;
     font-size: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
+    width: 300px;
   }
 
   button:hover {
