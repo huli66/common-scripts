@@ -15,7 +15,10 @@
       "Bash(./node_modules/.bin/oxlint --list-rules 2>&1 | head -50)",
       "Bash(./node_modules/.bin/oxlint --help 2>&1 | grep -i \"list\\\\|rules\")",
       "Bash(printf '{}' > /Users/momoyu/Desktop/common-scripts/.oxlintrc.json && ./node_modules/.bin/oxlint --rules 2>&1 | grep -i \"string\\\\|quote\\\\|style\")",
-      "Bash(./node_modules/.bin/oxlint --rules 2>&1 | grep -i \"prefer.*quote\\\\|avoid.*quote\\\\|double\\\\|single\")"
+      "Bash(./node_modules/.bin/oxlint --rules 2>&1 | grep -i \"prefer.*quote\\\\|avoid.*quote\\\\|double\\\\|single\")",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__evaluate_script"
     ]
   }
 }
