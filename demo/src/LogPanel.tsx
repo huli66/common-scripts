@@ -6,6 +6,7 @@ const TYPE_COLORS: Record<string, string> = {
   unhandledrejection: "#9b59b6",
   custom_error: "#2980b9",
   LOCATION_CHANGE: "#27ae60",
+  console_error: "#2980b9",
 };
 
 export default function LogPanel() {

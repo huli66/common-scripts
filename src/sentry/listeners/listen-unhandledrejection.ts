@@ -1,4 +1,4 @@
-import {logger, getErrorStack} from "../utils";
+import {getErrorStack} from "../utils";
 import {IF_PREVENT_ERROR} from "../config";
 import type {TListener} from "../types";
 
@@ -10,14 +10,14 @@ const ListenUnhandledrejection: TListener = (report) => {
     "unhandledrejection",
     (e) => {
       try {
-        logger.info("[unhandledrejection error]:", e);
-        const stack = getErrorStack(e.reason);
-        logger.info("[unhandledrejection error stack]:", stack);
+        console.log('e', e, 'reson', e.reason)
+        const stack = e.reason instanceof Error ? getErrorStack(e.reason) : [];
+        const message = e.reason instanceof Error ? e.reason.message : String(e.reason);
         report({
           type: "unhandledrejection",
           name: "",
-          stack,
-          message: e.reason?.message,
+          stack: stack ?? [],
+          message,
         });
         if (IF_PREVENT_ERROR) {
           e.preventDefault();

@@ -1,4 +1,4 @@
-import {logger} from "../utils";
+import {getErrorStack, logger} from "../utils";
 import type { TListener } from "../types";
 
 /**
@@ -8,20 +8,22 @@ const ListenConsoleError: TListener = (report) => {
   const originalConsoleError = console.error;
 
   console.error = function (...args) {
-    const msg = args[0];
-    if (typeof msg === "string" && msg.includes("React")) {
-      try {
-        // 实际验证一下 error-boundary 报错之后到输出
-        logger.info("[react boundary error]:", msg);
-        const error = {
-          type: "react_boundary_error",
-          message: args[0],
-          componentStack: args[1],
-        };
-        report(error);
-      } catch (err) {
-        console.log("[listen console error error]:", err);
+    const arg1 = args?.[1];
+    const arg2 = args?.[2];
+    try {
+      if (typeof arg2 === 'string' && arg2?.includes('The above error occurred in')) {
+        if (typeof arg1 === 'object' && arg1 instanceof Error) {
+          const stack = getErrorStack(arg1);
+          report({
+            type: 'console_error',
+            name: 'react_boundary_error',
+            message: arg1?.message || '',
+            stack,
+          });
+        }
       }
+    } catch (err) {
+      console.log('[listen console error]:', err);
     }
     originalConsoleError.apply(console, args);
   };

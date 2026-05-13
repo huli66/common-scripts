@@ -16,6 +16,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // console.error(error);
     window.dispatchEvent(
       new CustomEvent('app:error', {
         detail: { error, errorInfo },

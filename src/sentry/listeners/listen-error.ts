@@ -9,7 +9,6 @@ const ListenError: TListener = (report) => {
     (e) => {
       try {
         // 运行时错误交给 onerror 上报，这里过滤避免重复上报
-        console.log('e.target', e.target);
         if (e.target && e.target !== window) {
           logger.info("[addEventListener error]:", e);
           // const stack = getErrorStack(e.error);

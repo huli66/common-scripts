@@ -20,6 +20,7 @@ const ListenCustomError: TListener = (report) => {
       const {error, errorInfo} = event.detail;
       const customError = {
         type: "custom_error",
+        name: 'app:error',
         message: error.message,
         stack: error.stack,
         componentStack: errorInfo ? errorInfo.componentStack : null,

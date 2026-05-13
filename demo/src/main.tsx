@@ -7,6 +7,7 @@ import ListenUnhandledrejection from '@sentry/listeners/listen-unhandledrejectio
 import ListenCustomError from '@sentry/listeners/listen-custom-error'
 import ListenLocationChange from '@sentry/listeners/listen-location-change'
 import ListenRequest from '@sentry/listeners/listen-request'
+import ListenConsoleError from '@sentry/listeners/listen-console-error'
 
 declare global {
   interface Window {
@@ -31,6 +32,7 @@ ListenUnhandledrejection(reportError)
 ListenCustomError(reportError)
 ListenLocationChange(reportError)
 ListenRequest(reportError)
+ListenConsoleError(reportError);  
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
