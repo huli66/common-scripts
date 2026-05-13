@@ -18,7 +18,9 @@
       "Bash(./node_modules/.bin/oxlint --rules 2>&1 | grep -i \"prefer.*quote\\\\|avoid.*quote\\\\|double\\\\|single\")",
       "mcp__chrome-devtools__navigate_page",
       "mcp__chrome-devtools__take_screenshot",
-      "mcp__chrome-devtools__evaluate_script"
+      "mcp__chrome-devtools__evaluate_script",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)"
     ]
   }
 }

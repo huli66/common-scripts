@@ -15,12 +15,32 @@ const ListenRequest: TListener = (report) => {
   XMLHttpRequest.prototype.send = function (...args) {
     this.addEventListener("readystatechange", function () {
       if (this.readyState === XMLHttpRequest.DONE) {
-        report({
-          type: "XHR",
-          message: `[XHR] ${this._method} ${this._url}, s: ${this.status}, rs: ${this.response?.status}, msg: ${this.response?.message}`,
-          stack: [],
-          name: "",
-        });
+        console.log('xhr this', this);
+        if (this.responseType === '' || this.responseType === 'text') {
+          try {
+            const body = JSON.parse(this.responseText);
+            report({
+              type: "XHR",
+              name: this?.status || '',
+              message: `[XHR] ${this._method} ${this._url}, rs: ${body?.status}, msg: ${body.message}`,
+              stack: [],
+            });
+          } catch (err) {
+            report({
+              type: "XHR",
+              name: this?.status || '',
+              message: `[XHR] ${this._method} ${this._url}, 无法读取返回数据`,
+              stack: [],
+            });
+          }
+        } else {
+          report({
+            type: "XHR",
+            name: this?.status || '',
+            message: `[XHR] ${this._method} ${this._url}, 无法读取返回数据`,
+            stack: [],
+          });
+        }
       }
     });
 
@@ -33,20 +53,46 @@ const ListenRequest: TListener = (report) => {
     const url = input instanceof Request ? input.url : input;
     const method = (init?.method || "GET").toUpperCase();
 
-    const response = await _fetch(input, init, ...args);
-
-    // clone 一份，避免 body 只能读一次
-    const clone = response.clone();
-    clone.text().then((body) => {
-      report({
-        type: "FETCH",
-        message: `[Fetch] ${method} ${url}, s: ${response.status}, rs: ${response.response?.status}, msg: ${response.response?.message}`,
+    try {                                               
+      const response = await _fetch(input, init, ...args)
+      const clone = response.clone();
+      const contentType = clone.headers.get('Content-Type') || '';
+      if (contentType.includes('application/json')) {
+        clone.json().then((body) => {
+          report({
+            type: "FETCH",
+            name: clone?.status || '',
+            message: `[Fetch] ${method} ${url}, rs: ${body?.status}, msg: ${body?.message}`,
+            stack: [],
+          });
+        });
+      } else if (contentType.includes('text/plain')) {
+        clone.text().then((body) => {
+          report({
+            type: "FETCH",
+            name: clone?.status || '',
+            message: `[Fetch] ${method} ${url}, s: ${clone.status}, application/text`,
+            stack: [],
+          });
+        });
+      } else {
+        report({
+          type: "FETCH",
+          name: clone?.status || '',
+          message: `[Fetch] ${method} ${url}, 非 applycation/json | application/text 类型`,
+          stack: [],
+        });
+      }                                                                
+      return response;                               
+    } catch (err: any) {
+      report({                                   
+        type: 'FETCH',
+        message: `[Fetch] ${method} ${url}, msg: ${err?.message}`,     
         stack: [],
-        name: "",
-      });
-    });
-
-    return response;
+        name: 'FETCH_ERROR',                                                          
+      })                                                
+      throw err
+    }
   };
 };
 

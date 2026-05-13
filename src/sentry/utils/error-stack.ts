@@ -9,7 +9,7 @@ export const getErrorStack = (error: Error) => {
     }
     return stack;
   } catch (error) {
-    console.error('getErrorStack error', error);
+    console.log('getErrorStack error', error);
     return [];
   }
 };
