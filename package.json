@@ -7,18 +7,23 @@
     "dev": "vite",
     "tsc:build": "tsc && vite build",
     "build": "vite build",
+    "build:auth": "BUILD_TARGET=auth vite build",
+    "build:sentry": "BUILD_TARGET=sentry vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@types/md5": "^2.3.6",
+    "@types/node": "^25.6.0",
     "typescript": "~6.0.2",
     "vite": "^8.0.4"
   },
   "dependencies": {
     "blueimp-md5": "^2.19.0",
+    "error-stack-parser": "^2.1.4",
     "js-base64": "^3.7.8",
     "md5": "^2.3.0",
     "oxfmt": "^0.44.0",
-    "oxlint": "^1.59.0"
+    "oxlint": "^1.59.0",
+    "source-map": "^0.7.6"
   }
 }

@@ -23,7 +23,7 @@ export const fetchLogin = (username: string, password: string): Promise<IRequest
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({username, password}),
+      body: JSON.stringify({username, password, gatewayToken: true}),
     })
       .then((response) => response.json())
       .then((data) => {

@@ -1,6 +1,7 @@
 import { getUser, inQb } from "./qb-service"
 import { fetchLogin } from "../api"
 import openDialog from "../LoginDialog/open-dialog";
+import { logger } from "./logger";
 
 /**
  * 在 QB 客户端中，检查用户是否登录
@@ -9,23 +10,37 @@ import openDialog from "../LoginDialog/open-dialog";
  */
 export const loginInQb = () => {
   if (inQb()) {
+    logger.info("loginInQb");
     getUser(
       (user) => {
-        if (user.id !== window.SS_USER.id) {
-          fetchLogin(user.username, user.password).then((res) => {
-            if (res.status === 200) {
-              window.SS_USER = res.content;
-              window.location.reload();
-            }
-            console.log('登录失败，考虑添加重试机制，防止连续重试登录导致死循环');
-            alert('登录失败，请重新登录');
-          });
-        }
+        logger.info('user', user, window.SS_USER);
+        fetchLogin(user.username, user.password).then((res) => {
+          if (res.status === 200) {
+            window.SS_USER = res.content;
+            window.location.reload();
+            logger.info('login success');
+            return;
+          }
+          logger.info('登录失败，考虑添加重试机制，防止连续重试登录导致死循环');
+          // alert('登录失败，请重新登录');
+        });
+        // if (user.id !== window.SS_USER.id) {
+        //   fetchLogin(user.username, user.password).then((res) => {
+        //     if (res.status === 200) {
+        //       window.SS_USER = res.content;
+        //       window.location.reload();
+        //     }
+        //     console.log('登录失败，考虑添加重试机制，防止连续重试登录导致死循环');
+        //     // alert('登录失败，请重新登录');
+        //   });
+        // }
       },
       (err) => {
-        console.log("getUser failed", err);
+        logger.info("getUser failed", err);
       }
     )
+  } else {
+    logger.info("not inQb");
   }
 }
 

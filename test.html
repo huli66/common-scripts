@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>触发错误</title>
+    <script type="module" src="/src/sentry/sentry.ts"></script>
+  </head>
+  <body>
+    <!-- 触发 window.onerror / listen-error -->
+    <button onclick="undefinedFunc()">JS 运行时错误</button>
+
+    <!-- 触发 listen-unhandledrejection -->
+    <button
+      onclick="Promise.reject(new Error('promise错误'))"
+    >
+      Promise 未捕获
+    </button>
+
+    <!-- 触发资源加载错误 (listen-error 捕获) -->
+    <button
+      onclick="                                         
+        let img = new Image();                                       
+        img.src = '/not-exist.png';                             
+        document.body.appendChild(img);                              
+      "
+    >
+      资源加载失败
+    </button>
+
+    <!-- 触发自定义错误 (listen-custom-error) -->
+    <button
+      onclick="                              
+        window.dispatchEvent(new CustomEvent('app:error', {detail: {msg: '自定义错误'}}))                                       
+      "
+    >
+      自定义事件错误
+    </button>
+
+    <!-- 触发路由变化 (listen-location-change) -->
+    <button
+      onclick="history.pushState({}, '', '/new-path')"
+    >
+      路由变化
+    </button>
+    <script></script>
+  </body>
+</html>

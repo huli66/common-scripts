@@ -10,6 +10,30 @@
   </head>
   <body>
     <div id="app">111</div>
-    <script type="module" src="/src/main.ts"></script>
+    <button id="btn">Click me</button>
+    <script type="module" src="/src/sentry/sentry.ts"></script>
+
+    <script>
+      const REPORT_API = "https://qbweb.qa.com:22888/api/report";
+      const report = (error) => {
+        // try {
+          const blob = new Blob([JSON.stringify({logText: error})], {
+            type: "application/json",
+          });
+          // navigator.sendBeacon(REPORT_API, blob);
+          fetch(REPORT_API, {
+            method: "POST",
+            body: blob,
+          });
+        // } catch (err) {
+        //   console.log("[sendBeacon error]:", err);
+        // }
+      };
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", () => {
+        // throw new Error("test error");
+        report('hhhhhhh')
+      });
+    </script>
   </body>
 </html>

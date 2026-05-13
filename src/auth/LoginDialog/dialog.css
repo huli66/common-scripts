@@ -9,7 +9,7 @@
   --input-border: rgba(38, 96, 88, 1);
   --input-border-hover: rgba(0, 204, 177);
 
-  width: 300px;
+  /* width: 300px; */
   height: 180px;
   background-color: var(--dialog-bg);
   border-radius: 5px;
@@ -28,6 +28,10 @@
 
   &::backdrop {
     background-color: var(--dialog-backdrop-bg);
+  }
+
+  p {
+    margin-bottom: 16px;
   }
 
   label {

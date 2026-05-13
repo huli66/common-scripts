@@ -1,8 +1,8 @@
 import md5 from "md5";
-import { loginUrl } from "../config";
 
 import dialogHTML from "./dialog.html?raw";
 import dialogStyle from "./dialog.css?inline";
+import { fetchLogin } from "../api";
 
 const openDialog = () => {
   console.log("open dialog");
@@ -27,21 +27,15 @@ const openDialog = () => {
     if (!username || !password) {
       return;
     }
-    fetch(loginUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password: md5(password) }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 200) {
-          console.log("Login successful!");
+    fetchLogin(username, md5(password))
+      .then((res) => {
+        if (res.status === 200) {
+          window.SS_USER = res.content;
           window.location.reload();
           dialog.close();
+        } else {
+          console.log('登录失败，考虑添加重试机制，防止连续重试登录导致死循环');
         }
-        // 这里可以根据返回的数据进行相应的处理，比如存储 token 等
       })
       .catch((error) => {
         console.error("Login failed:", error);
