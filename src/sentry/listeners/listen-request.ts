@@ -15,31 +15,38 @@ const ListenRequest: TListener = (report) => {
   XMLHttpRequest.prototype.send = function (...args) {
     this.addEventListener("readystatechange", function () {
       if (this.readyState === XMLHttpRequest.DONE) {
-        console.log('xhr this', this);
         if (this.responseType === '' || this.responseType === 'text') {
           try {
             const body = JSON.parse(this.responseText);
-            report({
-              type: "XHR",
-              name: this?.status || '',
-              message: `[XHR] ${this._method} ${this._url}, rs: ${body?.status}, msg: ${body.message}`,
-              stack: [],
-            });
+            if (body?.status > 200) {
+              report({
+                type: "XHR",
+                name: this?.status || '',
+                message: `[XHR] ${this._method} ${this._url}, rs: ${body?.status}, msg: ${body.message}`,
+                stack: [],
+              });
+            }
+            // report({
+            //   type: "XHR",
+            //   name: this?.status || '',
+            //   message: `[XHR] ${this._method} ${this._url}, rs: ${body?.status}, msg: ${body.message}`,
+            //   stack: [],
+            // });
           } catch (err) {
-            report({
-              type: "XHR",
-              name: this?.status || '',
-              message: `[XHR] ${this._method} ${this._url}, 无法读取返回数据`,
-              stack: [],
-            });
+            // report({
+            //   type: "XHR",
+            //   name: this?.status || '',
+            //   message: `[XHR] ${this._method} ${this._url}, 无法读取返回数据`,
+            //   stack: [],
+            // });
           }
         } else {
-          report({
-            type: "XHR",
-            name: this?.status || '',
-            message: `[XHR] ${this._method} ${this._url}, 无法读取返回数据`,
-            stack: [],
-          });
+          // report({
+          //   type: "XHR",
+          //   name: this?.status || '',
+          //   message: `[XHR] ${this._method} ${this._url}, 无法读取返回数据`,
+          //   stack: [],
+          // });
         }
       }
     });
@@ -59,29 +66,37 @@ const ListenRequest: TListener = (report) => {
       const contentType = clone.headers.get('Content-Type') || '';
       if (contentType.includes('application/json')) {
         clone.json().then((body) => {
-          report({
-            type: "FETCH",
-            name: clone?.status || '',
-            message: `[Fetch] ${method} ${url}, rs: ${body?.status}, msg: ${body?.message}`,
-            stack: [],
-          });
+          if (clone?.status > 200) {
+            report({
+              type: "FETCH",
+              name: clone?.status || '',
+              message: `[Fetch] ${method} ${url}, rs: ${body?.status}, msg: ${body?.message}`,
+              stack: [],
+            });
+          }
+          // report({
+          //   type: "FETCH",
+          //   name: clone?.status || '',
+          //   message: `[Fetch] ${method} ${url}, rs: ${body?.status}, msg: ${body?.message}`,
+          //   stack: [],
+          // });
         });
       } else if (contentType.includes('text/plain')) {
-        clone.text().then((body) => {
-          report({
-            type: "FETCH",
-            name: clone?.status || '',
-            message: `[Fetch] ${method} ${url}, s: ${clone.status}, application/text`,
-            stack: [],
-          });
-        });
+        // clone.text().then((body) => {
+        //   report({
+        //     type: "FETCH",
+        //     name: clone?.status || '',
+        //     message: `[Fetch] ${method} ${url}, s: ${clone.status}, application/text`,
+        //     stack: [],
+        //   });
+        // });
       } else {
-        report({
-          type: "FETCH",
-          name: clone?.status || '',
-          message: `[Fetch] ${method} ${url}, 非 applycation/json | application/text 类型`,
-          stack: [],
-        });
+        // report({
+        //   type: "FETCH",
+        //   name: clone?.status || '',
+        //   message: `[Fetch] ${method} ${url}, 非 applycation/json | application/text 类型`,
+        //   stack: [],
+        // });
       }                                                                
       return response;                               
     } catch (err: any) {

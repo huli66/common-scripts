@@ -59,6 +59,7 @@ export const findCondBySourceMap = async (sourceMap, line, column) => {
   return position;
 };
 
-const src = 'dist/4.1bd9f9de.js.map';
+const src = 'dist/vendors~main.fb1f9038.js.map';
 
-findCondBySourceMap(src, 1, 100131)
+const result = await findCondBySourceMap(src, 9, 187339);
+console.log(result);

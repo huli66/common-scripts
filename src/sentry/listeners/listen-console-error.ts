@@ -8,9 +8,9 @@ const ListenConsoleError: TListener = (report) => {
   const originalConsoleError = console.error;
 
   console.error = function (...args) {
-    const arg1 = args?.[1];
-    const arg2 = args?.[2];
     try {
+      const arg1 = args?.[1];
+      const arg2 = args?.[2];
       if (typeof arg2 === 'string' && arg2?.includes('The above error occurred in')) {
         if (typeof arg1 === 'object' && arg1 instanceof Error) {
           const stack = getErrorStack(arg1);
@@ -20,6 +20,19 @@ const ListenConsoleError: TListener = (report) => {
             message: arg1?.message || '',
             stack,
           });
+        }
+      } else {
+        // 普通 console.error
+        for (const arg of args) {
+          if (arg instanceof Error) {
+            const stack = getErrorStack(arg);
+            report({
+              type: 'console_error',
+              name: 'console_error',
+              message: arg?.message || '',
+              stack,
+            });
+          }
         }
       }
     } catch (err) {

@@ -5,6 +5,8 @@ import ListenError from "./listeners/listen-error";
 import ListenUnhandledrejection from "./listeners/listen-unhandledrejection";
 import ListenCustomError from "./listeners/listen-custom-error";
 import ListenLocationChange from "./listeners/listen-location-change";
+import ListenRequest from "./listeners/listen-request";
+import ListenConsoleError from "./listeners/listen-console-error";
 
 const QUEUE_MAX_LENGTH = 5;
 
@@ -33,16 +35,20 @@ const initSentry = () => {
   }
 
   document.addEventListener("click", (e) => {
-    const el = e.target as HTMLElement;
-    const info = {
-      type: "click",
-      timestamp: new Date().toISOString(),
-      target: `${el.tagName}${el.id ? "#" + el.id : ""}${
-        el.className ? "." + el.className.split(" ").join(".") : ""
-      }`,
-      text: el.innerText,
-    };
-    oprQueue.add(info);
+    try {
+      const el = e.target as HTMLElement;
+      const info = {
+        type: "click",
+        timestamp: new Date().toISOString(),
+        target: `${el.tagName}${el.id ? "#" + el.id : ""}${
+          el.className ? el.className : ""
+        }`,
+        text: el.innerText,
+      };
+      oprQueue.add(info);
+    } catch (err) {
+      console.log('[click error]:', err);
+    }
   }, true);
 
   // window.onerror 错误
@@ -61,10 +67,10 @@ const initSentry = () => {
   ListenLocationChange(reportError);
 
   // 捕获 console.error 记录
-  // listenConsoleError(reportError)
+  ListenConsoleError(reportError)
 
   // 监听所有请求状态
-  // ListenRequest(reportError);
+  ListenRequest(reportError);
 }
 
 initSentry();

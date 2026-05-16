@@ -1,5 +1,9 @@
 import './auth/auth.ts'
 
+import { findCondBySourceMap } from "./sentry/read-map";
+const src = 'dist/vendors~main.fb1f9038.js.map';
+findCondBySourceMap(src, 9, 187339);
+
 console.log("main.ts start");
 const a = 1;
 
