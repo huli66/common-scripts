@@ -18,6 +18,7 @@ const initSentry = () => {
     // showGlobalErrorUI
     const payload = {
       project: 'web',
+      userId: window?.SS_USER?.userId || '',
       timestamp: new Date().toLocaleString(),
       url: window.location.href,
       breadcrumbs: oprQueue.get(),
